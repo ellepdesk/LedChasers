@@ -91,10 +91,9 @@ class Chaser
   unsigned int slowness;
   bool finished;
   bool reverse;
+  bool fastFalloff;
 
-  static const unsigned int tailFalloff = 2;
-
-  static void drawPixels(unsigned int location, CRGB color, bool reverse)
+  static void drawPixels(unsigned int location, CRGB color, bool reverse, bool fastFalloff)
   {
     while (color != CRGB(CRGB::Black))
     {
@@ -108,7 +107,9 @@ class Chaser
         break;
 
       location -= 1;
-      color /= tailFalloff;
+      color /= 2;
+      if (fastFalloff)
+        color /= 2;
     }
   }
 
@@ -120,6 +121,7 @@ public:
     this->color = randomColor();
     this->reverse = random(0,2);
     this->finished = false;
+    this->fastFalloff = random(0,2);
   }
 
   bool run(unsigned int counter)
@@ -130,7 +132,7 @@ public:
       finished = location >= NUM_LEDS;
     }
     if (!finished)
-      drawPixels(location, color, reverse);
+      drawPixels(location, color, reverse, fastFalloff);
     else
       location = 0;
     return finished;
