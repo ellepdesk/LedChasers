@@ -117,7 +117,7 @@ public:
   Chaser(unsigned int location = 0)
   {
     this->location = location;
-    this->slowness = 1 << random(0,4);
+    this->slowness = random(1,17);
     this->color = randomColor();
     this->reverse = random(0,2);
     this->finished = false;
