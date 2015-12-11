@@ -138,15 +138,19 @@ public:
 };
 
 static ChaseTrack<16> track;
+static unsigned int nextRun = 0;
 
 void setup()
 {
     FastLED.addLeds<WS2811, DATA_PIN, BRG>(leds, NUM_LEDS);
+    nextRun = millis();
 }
 
 void loop()
 {
+  nextRun += 5;
   track.run();
   FastLED.show();
-  delay(5);
+  while (millis() < nextRun)
+  {}
 }
